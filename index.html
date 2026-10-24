@@ -91,6 +91,8 @@
     .section-head h2{max-width:660px;margin-top:18px;color:var(--navy)}
     .section-head>p{max-width:280px;font-size:14px;color:var(--muted)}
     .product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .product-track{display:block}
+    .product-grid--clone{display:none}
     .product{position:relative;overflow:hidden;aspect-ratio:16/9;background:var(--navy);border:1px solid var(--line);transition:border-color .25s,box-shadow .25s}
     .product:hover{border-color:var(--royal);box-shadow:0 18px 40px rgba(10,27,63,.18)}
     .product img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
@@ -171,6 +173,12 @@
       section{padding:78px 0}
       .section-head{display:block}.section-head>p{margin-top:18px}
       .product-grid{grid-template-columns:1fr}
+      .product-carousel{overflow:hidden;margin:0 -16px;padding:0 16px}
+      .product-track{display:flex;width:max-content;animation:product-marquee 28s linear infinite;will-change:transform}
+      .product-grid,.product-grid--clone{display:flex;grid-template-columns:none;gap:12px;width:max-content;flex:0 0 auto;padding-right:12px}
+      .product-grid--clone{display:flex}
+      .product{flex:0 0 84vw;max-width:380px}
+      @keyframes product-marquee{to{transform:translateX(-50%)}}
       .feature-grid{display:block}.feature-photo{min-height:330px}
       .feature-copy{padding:65px 16px 70px}.feature-list{gap:18px}
       .steps{grid-template-columns:1fr}
@@ -181,6 +189,7 @@
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
       .reveal{opacity:1;transform:none;transition:none}
+      .product-track{animation:none!important;transform:none!important}.product-carousel{overflow-x:auto}.product-grid--clone{display:none!important}
       *{transition:none!important}
     }
   </style>
@@ -213,11 +222,21 @@
 
     <section class="products" id="modelos"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Linha Amaral</div><h2 class="display">Um modelo para cada missão.</h2></div><p>Reboques para carga, transporte e lazer — incluindo carretas sob medida para todos os tipos de barco.</p></div>
-      <div class="product-grid">
+      <div class="product-carousel" role="region" aria-label="Modelos de reboques">
+        <div class="product-track">
+          <div class="product-grid">
         <figure class="product reveal"><img src="assets/reboque-utilitario-madeira.jpg" alt="Reboque utilitário com laterais de madeira em frente à fachada da Reboques Amaral" width="1280" height="720" loading="lazy"></figure>
         <figure class="product reveal"><img src="assets/reboque-nautico-amarelo.jpg" alt="Reboque náutico amarelo com guincho e apoios para o casco" width="1280" height="720" loading="lazy"></figure>
         <figure class="product reveal"><img src="assets/reboque-utilitario-lateral.jpg" alt="Reboque utilitário com estrutura de alumínio e laterais de madeira, visto de lado" width="1280" height="720" loading="lazy"></figure>
         <figure class="product reveal"><img src="assets/reboque-aco-piso-xadrez.jpg" alt="Reboque de aço com piso xadrez e rampas, visto de cima" width="1280" height="720" loading="lazy"></figure>
+          </div>
+          <div class="product-grid product-grid--clone" aria-hidden="true">
+        <figure class="product"><img src="assets/reboque-utilitario-madeira.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
+        <figure class="product"><img src="assets/reboque-nautico-amarelo.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
+        <figure class="product"><img src="assets/reboque-utilitario-lateral.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
+        <figure class="product"><img src="assets/reboque-aco-piso-xadrez.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
+          </div>
+        </div>
       </div>
     </div></section>
 
