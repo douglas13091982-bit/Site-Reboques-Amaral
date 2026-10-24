@@ -172,13 +172,10 @@
       .ticker .wrap span+span{margin-left:28px}
       section{padding:78px 0}
       .section-head{display:block}.section-head>p{margin-top:18px}
-      .product-grid{grid-template-columns:1fr}
       .product-carousel{overflow:hidden;margin:0 -16px;padding:0 16px}
-      .product-track{display:flex;width:max-content;animation:product-marquee 28s linear infinite;will-change:transform}
-      .product-grid,.product-grid--clone{display:flex;grid-template-columns:none;gap:12px;width:max-content;flex:0 0 auto;padding-right:12px}
-      .product-grid--clone{display:flex}
-      .product{flex:0 0 84vw;max-width:380px}
-      @keyframes product-marquee{to{transform:translateX(-50%)}}
+      .product-track{display:flex;grid-template-columns:none;gap:0;width:100%;will-change:transform}
+      .product-grid--clone{display:block;flex:0 0 100%}
+      .product{flex:0 0 100%;max-width:none}
       .feature-grid{display:block}.feature-photo{min-height:330px}
       .feature-copy{padding:65px 16px 70px}.feature-list{gap:18px}
       .steps{grid-template-columns:1fr}
@@ -189,7 +186,7 @@
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
       .reveal{opacity:1;transform:none;transition:none}
-      .product-track{animation:none!important;transform:none!important}.product-carousel{overflow-x:auto}.product-grid--clone{display:none!important}
+      .product-track{transition:none!important;transform:none!important}.product-carousel{overflow-x:auto;scroll-snap-type:x mandatory}.product{scroll-snap-align:start}.product-grid--clone{display:none!important}
       *{transition:none!important}
     }
   </style>
@@ -223,19 +220,12 @@
     <section class="products" id="modelos"><div class="wrap">
       <div class="section-head reveal"><div><div class="eyebrow">Linha Amaral</div><h2 class="display">Um modelo para cada missão.</h2></div><p>Reboques para carga, transporte e lazer — incluindo carretas sob medida para todos os tipos de barco.</p></div>
       <div class="product-carousel" role="region" aria-label="Modelos de reboques">
-        <div class="product-track">
-          <div class="product-grid">
-        <figure class="product reveal"><img src="assets/reboque-utilitario-madeira.jpg" alt="Reboque utilitário com laterais de madeira em frente à fachada da Reboques Amaral" width="1280" height="720" loading="lazy"></figure>
-        <figure class="product reveal"><img src="assets/reboque-nautico-amarelo.jpg" alt="Reboque náutico amarelo com guincho e apoios para o casco" width="1280" height="720" loading="lazy"></figure>
-        <figure class="product reveal"><img src="assets/reboque-utilitario-lateral.jpg" alt="Reboque utilitário com estrutura de alumínio e laterais de madeira, visto de lado" width="1280" height="720" loading="lazy"></figure>
-        <figure class="product reveal"><img src="assets/reboque-aco-piso-xadrez.jpg" alt="Reboque de aço com piso xadrez e rampas, visto de cima" width="1280" height="720" loading="lazy"></figure>
-          </div>
-          <div class="product-grid product-grid--clone" aria-hidden="true">
-        <figure class="product"><img src="assets/reboque-utilitario-madeira.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
-        <figure class="product"><img src="assets/reboque-nautico-amarelo.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
-        <figure class="product"><img src="assets/reboque-utilitario-lateral.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
-        <figure class="product"><img src="assets/reboque-aco-piso-xadrez.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
-          </div>
+        <div class="product-grid product-track">
+          <figure class="product reveal"><img src="assets/reboque-utilitario-madeira.jpg" alt="Reboque utilitário com laterais de madeira em frente à fachada da Reboques Amaral" width="1280" height="720" loading="lazy"></figure>
+          <figure class="product reveal"><img src="assets/reboque-nautico-amarelo.jpg" alt="Reboque náutico amarelo com guincho e apoios para o casco" width="1280" height="720" loading="lazy"></figure>
+          <figure class="product reveal"><img src="assets/reboque-utilitario-lateral.jpg" alt="Reboque utilitário com estrutura de alumínio e laterais de madeira, visto de lado" width="1280" height="720" loading="lazy"></figure>
+          <figure class="product reveal"><img src="assets/reboque-aco-piso-xadrez.jpg" alt="Reboque de aço com piso xadrez e rampas, visto de cima" width="1280" height="720" loading="lazy"></figure>
+          <figure class="product product-grid--clone" aria-hidden="true"><img src="assets/reboque-utilitario-madeira.jpg" alt="" width="1280" height="720" loading="lazy"></figure>
         </div>
       </div>
     </div></section>
@@ -279,6 +269,39 @@
   <script>
     const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    const productTrack=document.querySelector('.product-track');
+    const mobileProductMode=window.matchMedia('(max-width:560px)');
+    const reducedProductMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+    let productSlideIndex=0, productSlideTimer=null, productResetTimer=null;
+    function resetProductCarousel(){
+      window.clearInterval(productSlideTimer);
+      window.clearTimeout(productResetTimer);
+      productSlideTimer=null;productResetTimer=null;productSlideIndex=0;
+      productTrack.style.removeProperty('transform');
+      productTrack.style.removeProperty('transition');
+    }
+    function configureProductCarousel(){
+      resetProductCarousel();
+      if(!mobileProductMode.matches||reducedProductMotion.matches)return;
+      const slideCount=productTrack.querySelectorAll('.product:not(.product-grid--clone)').length;
+      productSlideTimer=window.setInterval(()=>{
+        productSlideIndex++;
+        productTrack.style.transition='transform .65s ease';
+        productTrack.style.transform='translateX(-'+(productSlideIndex*100)+'%)';
+        if(productSlideIndex===slideCount){
+          productResetTimer=window.setTimeout(()=>{
+            productSlideIndex=0;
+            productTrack.style.transition='none';
+            productTrack.style.transform='translateX(0)';
+          },700);
+        }
+      },4500);
+    }
+    if(productTrack){
+      configureProductCarousel();
+      mobileProductMode.addEventListener('change',configureProductCarousel);
+      reducedProductMotion.addEventListener('change',configureProductCarousel);
+    }
     const menu=document.getElementById('menu'),links=document.getElementById('navlinks');
     menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',open)});
     links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false')}));
