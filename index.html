@@ -60,9 +60,10 @@
     .menu{display:none;border:0;background:none;font-size:26px;color:var(--navy);padding:4px 8px}
 
     /* Hero */
-    .hero{background:var(--navy);color:#fff;min-height:calc(100vh - 115px);display:grid;align-items:center;overflow:hidden;position:relative;
-      background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:56px 56px}
-    .hero .wrap{width:min(var(--max),calc(100% - 48px));display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:70px 0}
+    .hero{background:var(--navy) url("assets/hero-capa-20261024.jpg") center 56%/cover no-repeat;color:#fff;min-height:calc(100vh - 115px);min-height:calc(100svh - 115px);display:grid;align-items:center;overflow:hidden;position:relative}
+    .hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(5,7,13,.96) 0%,rgba(5,7,13,.88) 30%,rgba(5,7,13,.5) 60%,rgba(5,7,13,.14) 100%),linear-gradient(0deg,rgba(5,7,13,.45),transparent 40%)}
+    .hero .wrap{width:min(var(--max),calc(100% - 48px));position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:center;padding:clamp(70px,10vh,120px) 0}
+    .hero-copy{max-width:600px}
     .hero h1{font-size:clamp(40px,5vw,72px);margin:22px 0 26px}
     .hero h1 em{font-style:normal;color:var(--sky)}
     .hero-lead{max-width:470px;color:#C3CEE8;font-size:17px}
@@ -70,10 +71,6 @@
     .link-ghost{display:inline-flex;align-items:center;gap:12px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
     .link-ghost span{width:32px;height:32px;border:1px solid rgba(255,255,255,.5);display:grid;place-items:center;border-radius:50%;transition:background .2s,border-color .2s}
     .link-ghost:hover span{background:var(--royal);border-color:var(--royal)}
-    .hero-photo{position:relative}
-    .hero-photo:before{content:"";position:absolute;inset:24px -22px -22px 22px;border:2px solid var(--royal)}
-    .hero-photo img{position:relative;width:100%;aspect-ratio:16/11;object-fit:cover}
-    .hero-photo .plate{position:absolute;left:-26px;bottom:-26px;z-index:2}
 
     .ticker{background:var(--white);border-bottom:1px solid var(--line)}
     .ticker .wrap{display:flex;justify-content:space-between;gap:25px;padding:21px 0;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy)}
@@ -152,8 +149,8 @@
       .navlinks{display:none;position:absolute;top:78px;left:-24px;right:-24px;flex-direction:column;gap:4px;padding:18px 24px 24px;background:var(--white);border-bottom:1px solid var(--line)}
       .navlinks.open{display:flex}
       .menu{display:block}.nav-cta{margin-left:auto}
-      .hero .wrap{grid-template-columns:1fr;gap:64px}
-      .hero-photo{max-width:700px;width:92%;margin:auto}
+      .hero{background-position:58% center}
+      .hero .wrap{grid-template-columns:1fr;gap:0}
       .intro-grid,.process-grid{grid-template-columns:1fr;gap:36px}
       .feature-copy{padding:75px 35px}
       .footer-grid{grid-template-columns:1fr 1fr}
@@ -162,13 +159,13 @@
     }
     @media(max-width:560px){
       .wrap{width:calc(100% - 32px)}
+      .hero{background-image:url("assets/hero-capa-mobile-20261024.jpg");background-position:center}
+      .hero:before{background:linear-gradient(180deg,rgba(5,7,13,.84) 0%,rgba(5,7,13,.70) 55%,rgba(5,7,13,.58) 100%)}
       .hero .wrap{width:calc(100% - 32px);padding:56px 0 80px}
       .topline .wrap{justify-content:center;text-align:center}.topline span:last-child{display:none}
       .nav{height:68px}.navlinks{top:68px;left:-16px;right:-16px;padding:16px}
       .nav{gap:10px}.hide-sm{display:none}.brand{flex:0 1 140px;min-width:0}.brand-logo,footer .brand-logo{width:100%;height:auto}footer .brand{flex:none;max-width:170px}.nav-cta{padding:11px 14px;font-size:10px;white-space:nowrap}
       .hero-lead{font-size:15px}
-      .hero-photo .plate--lg{left:-8px;bottom:-24px}
-      .plate--lg b{font-size:26px;padding:8px 14px 6px}
       .ticker .wrap{overflow:auto;white-space:nowrap;justify-content:flex-start}.ticker b{display:none}
       .ticker .wrap span+span{margin-left:28px}
       section{padding:78px 0}
@@ -204,10 +201,6 @@
         <h1 class="display">Leve mais.<br><em>Vá além.</em></h1>
         <p class="hero-lead">Fabricamos reboques e engates em Joinville para acompanhar o seu trabalho, sua carga e o seu próximo destino — com produção própria e qualidade certificada.</p>
         <div class="hero-actions"><a class="button" href="#modelos">Conheça os modelos <span>↗</span></a><a class="link-ghost" href="#contato"><span>↓</span> Fale com a gente</a></div>
-      </div>
-      <div class="hero-photo reveal">
-        <img src="assets/hero-reboques.jpg" alt="Reboque utilitário preto em frente à oficina da Reboques Amaral">
-        <div class="plate plate--lg" aria-label="Desde 1991"><i>BRASIL</i><b>RA·1991</b></div>
       </div>
     </div></section>
 
